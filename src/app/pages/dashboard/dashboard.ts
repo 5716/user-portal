@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -16,15 +16,19 @@ import { Auth } from '../../auth';
         <button nz-button nzDanger (click)="logout()">გასვლა</button>
       </div>
 
-      <nz-select [(ngModel)]="filter" class="w-48 mb-4">
-        <nz-option nzValue="All" nzLabel="სტატუსი"></nz-option>
+      <nz-select [ngModel]="filter()" (ngModelChange)="filter.set($event)" class="w-48 mb-4">
+        <nz-option nzValue="All" nzLabel="ყველა"></nz-option>
         <nz-option nzValue="Active" nzLabel="აქტიური"></nz-option>
         <nz-option nzValue="Inactive" nzLabel="არააქტიური"></nz-option>
       </nz-select>
 
-      <nz-table #t [nzData]="rows" [nzShowPagination]="false">
+      <nz-table #t [nzData]="rows()" [nzShowPagination]="false">
         <thead>
-          <tr><th>სახელი</th><th>როლი</th><th>სტატუსი</th></tr>
+          <tr>
+            <th>სახელი</th>
+            <th>როლი</th>
+            <th>სტატუსი</th>
+          </tr>
         </thead>
         <tbody>
           @for (row of t.data; track row.id) {
@@ -43,19 +47,19 @@ export class Dashboard {
   private router = inject(Router);
   private auth = inject(Auth);
 
-  filter = 'All';
+  filter = signal('All');
 
   users = [
-  { id: 1, name: 'კახა',     role: 'ადმინისტრატორი', status: 'Active' },
-  { id: 2, name: 'Helpdesk', role: 'საპორტი',        status: 'Inactive' },
-  { id: 3, name: 'საბა',     role: 'სტუმარი',        status: 'Active' },
-  { id: 4, name: 'SysAdmin', role: 'ადმინისტრატორი', status: 'Active' },
-  { id: 5, name: 'მარიამი',  role: 'სტუმარი',        status: 'Inactive' },
-];
+    { id: 1, name: 'კახა', role: 'ადმინისტრატორი', status: 'Active' },
+    { id: 2, name: 'Helpdesk', role: 'საპორტი', status: 'Inactive' },
+    { id: 3, name: 'საბა', role: 'სტუმარი', status: 'Active' },
+    { id: 4, name: 'SysAdmin', role: 'ადმინისტრატორი', status: 'Active' },
+    { id: 5, name: 'მარიამი', role: 'სტუმარი', status: 'Inactive' },
+  ];
 
-  get rows() {
-    return this.filter === 'All' ? this.users : this.users.filter(u => u.status === this.filter);
-  }
+  rows = computed(() =>
+    this.filter() === 'All' ? this.users : this.users.filter((u) => u.status === this.filter()),
+  );
 
   logout() {
     this.auth.logout();

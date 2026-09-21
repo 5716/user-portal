@@ -4,13 +4,12 @@ import { Router, RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Auth } from '../../auth';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, NzFormModule, NzInputModule, NzButtonModule, NzFlexModule, NzIconModule],
+  imports: [ReactiveFormsModule, RouterLink, NzFormModule, NzInputModule, NzButtonModule, NzIconModule],
   template: `
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
       <form nz-form [formGroup]="form" (ngSubmit)="submit()"
@@ -24,19 +23,19 @@ import { Auth } from '../../auth';
         </nz-form-item>
 
         <nz-form-item>
-      <nz-form-control nzErrorTip="საჭიროა მინიმუმ 6 სიმბოლო">
-        <nz-input-password>
-          <input nz-input placeholder="პაროლი" formControlName="password" />
-          <ng-template nzInputPasswordIcon let-visible>
-            @if (visible) {
-              <nz-icon nzType="eye" nzTheme="twotone" />
-            } @else {
-              <nz-icon nzType="eye-invisible" nzTheme="outline" />
-            }
-            </ng-template>
-          </nz-input-password>
-        </nz-form-control>
-      </nz-form-item>
+          <nz-form-control nzErrorTip="საჭიროა მინიმუმ 6 სიმბოლო">
+            <nz-input-password>
+              <input nz-input placeholder="პაროლი" formControlName="password" />
+              <ng-template nzInputPasswordIcon let-visible>
+                @if (visible) {
+                  <nz-icon nzType="eye" nzTheme="twotone" />
+                } @else {
+                  <nz-icon nzType="eye-invisible" nzTheme="outline" />
+                }
+              </ng-template>
+            </nz-input-password>
+          </nz-form-control>
+        </nz-form-item>
 
         <button nz-button nzType="primary" nzBlock>შესვლა</button>
 
@@ -53,8 +52,8 @@ export class Login {
   private auth = inject(Auth);
 
   form = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   submit() {
