@@ -3,10 +3,10 @@ import { CanActivateFn, Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
-  loggedIn = signal(false);
+  loggedIn = signal(localStorage.getItem('loggedIn') === 'true');
 
-  login()  { this.loggedIn.set(true); }
-  logout() { this.loggedIn.set(false); }
+  login()  { this.loggedIn.set(true);  localStorage.setItem('loggedIn', 'true'); }
+  logout() { this.loggedIn.set(false); localStorage.removeItem('loggedIn'); }
 }
 
 export const authGuard: CanActivateFn = () =>
