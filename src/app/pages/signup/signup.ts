@@ -6,13 +6,12 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Auth } from '../../auth';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, RouterLink, NzFormModule, NzInputModule, NzSelectModule, NzButtonModule, NzRadioModule, NzFlexModule, NzIconModule],
+  imports: [ReactiveFormsModule, RouterLink, NzFormModule, NzInputModule, NzSelectModule, NzButtonModule, NzRadioModule, NzIconModule],
   template: `
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
       <form nz-form [formGroup]="form" (ngSubmit)="submit()"
@@ -26,19 +25,19 @@ import { Auth } from '../../auth';
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-control nzErrorTip="შეიყვანე სწორი ელ-ფოსტა">
+          <nz-form-control nzErrorTip="შეიყვანე სწორი ელ-ფოსტა (მაგ. name@mail.com)">
             <input nz-input formControlName="email" placeholder="ელ-ფოსტა" />
           </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item>
-        <nz-form-control nzErrorTip="აირჩიე სქესი">
-          <nz-radio-group formControlName="gender">
-            <label nz-radio nzValue="Male">მამრობითი</label>
-            <label nz-radio nzValue="Female">მდედრობითი</label>
-          </nz-radio-group>
-        </nz-form-control>
-      </nz-form-item>
+        <nz-form-item class="!mt-6 !mb-6">
+          <nz-form-control nzErrorTip="აირჩიე სქესი">
+            <nz-radio-group formControlName="gender">
+              <label nz-radio nzValue="Male">მამრობითი</label>
+              <label nz-radio nzValue="Female">მდედრობითი</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
 
         <nz-form-item>
           <nz-form-control nzErrorTip="როლის არჩევა სავალდებულოა">
@@ -51,24 +50,24 @@ import { Auth } from '../../auth';
         </nz-form-item>
 
         <nz-form-item>
-      <nz-form-control nzErrorTip="შეიყვანე მინიმუმ 6 სიმბოლო">
-        <nz-input-password>
-          <input nz-input placeholder="პაროლი" formControlName="password" />
-          <ng-template nzInputPasswordIcon let-visible>
-            @if (visible) {
-              <nz-icon nzType="eye" nzTheme="twotone" />
-            } @else {
-              <nz-icon nzType="eye-invisible" nzTheme="outline" />
-            }
-          </ng-template>
-        </nz-input-password>
-      </nz-form-control>
-    </nz-form-item>
+          <nz-form-control nzErrorTip="შეიყვანე მინიმუმ 6 სიმბოლო">
+            <nz-input-password>
+              <input nz-input placeholder="პაროლი" formControlName="password" />
+              <ng-template nzInputPasswordIcon let-visible>
+                @if (visible) {
+                  <nz-icon nzType="eye" nzTheme="twotone" />
+                } @else {
+                  <nz-icon nzType="eye-invisible" nzTheme="outline" />
+                }
+              </ng-template>
+            </nz-input-password>
+          </nz-form-control>
+        </nz-form-item>
 
         <button nz-button nzType="primary" nzBlock>ანგარიშის შექმნა</button>
 
         <p class="mt-4 text-center text-sm">
-          გააქვს ანგარიში? <a routerLink="/login" class="text-blue-600">შესვლა</a>
+          გაქვს ანგარიში? <a routerLink="/login" class="text-blue-600">შესვლა</a>
         </p>
       </form>
     </div>
@@ -81,7 +80,7 @@ export class Signup {
 
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
     gender: ['', Validators.required],
     role: ['', Validators.required],
     password: ['', [Validators.required, Validators.minLength(6)]],
