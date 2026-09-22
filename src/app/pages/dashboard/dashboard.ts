@@ -1,3 +1,4 @@
+import { httpResource } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,13 +7,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Auth } from '../../auth';
-
-interface User {
-  id: number;
-  name: string;
-  role: string;
-  isActive: boolean;
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -43,10 +37,10 @@ interface User {
           @for (row of t.data; track row.id) {
             <tr>
               <td>{{ row.name }}</td>
-              <td>{{ row.role }}</td>
+              <td>{{ row.email }}</td>
               <!-- <td>{{ row.isActive ? 'აქტიური ✔' : 'არააქტიური ❌' }}</td>
                 -->
-              <td><nz-icon nzType="{{ row.isActive ? 'check' : 'close' }}" nzTheme="outline" /></td>
+              <td><nz-icon nzType="{{ row.id > 5 ? 'check' : 'close' }}" nzTheme="outline" /></td>
             </tr>
           }
         </tbody>
@@ -68,8 +62,18 @@ export class Dashboard {
     { id: 5, name: 'მარიამი', role: 'სტუმარი', isActive: false },
   ];
 
+  placeholderUsersResource = httpResource<PlaceholderUser[]>(
+    () => ({
+      url: `https://jsonplaceholder.typicode.com/users`,
+    }),
+    {
+      defaultValue: []
+    }
+  );
+
   rows = computed(() =>
-    this.filter() === null ? this.users : this.users.filter((u) => (this.filter() === 'Active' ? u.isActive : !u.isActive)),
+    this.placeholderUsersResource.value()
+    // this.filter() === null ? this.users : this.users.filter((u) => (this.filter() === 'Active' ? u.isActive : !u.isActive)),
   );
 
   logout() {
