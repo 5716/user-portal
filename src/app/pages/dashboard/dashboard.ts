@@ -1,14 +1,22 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { Auth } from '../../auth';
+
+interface User {
+  id: number;
+  name: string;
+  role: string;
+  isActive: boolean;
+}
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FormsModule, NzTableModule, NzSelectModule, NzButtonModule],
+  imports: [FormsModule, NzTableModule, NzSelectModule, NzButtonModule, NzIconModule],
   template: `
     <div class="max-w-3xl mx-auto p-8">
       <div class="flex items-center justify-between mb-6">
@@ -16,11 +24,12 @@ import { Auth } from '../../auth';
         <button nz-button nzDanger (click)="logout()">გასვლა</button>
       </div>
 
-      <nz-select [ngModel]="filter()" (ngModelChange)="filter.set($event)" class="w-48 mb-4">
-        <nz-option nzValue="All" nzLabel="ყველა"></nz-option>
+      <span class="pr-2 text-xs text-gray-500">ფილტრი</span>
+      <nz-select [(ngModel)]="filter" class="w-48 mb-4">
+      <!-- <nz-select [ngModel]="filter()" (ngModelChange)="filter.set($event)" class="w-48 mb-4"> -->
         <nz-option nzValue="Active" nzLabel="აქტიური"></nz-option>
         <nz-option nzValue="Inactive" nzLabel="არააქტიური"></nz-option>
-      </nz-select>
+      </nz-select><button nz-button nzType="primary" (click)="filter.set(null)">X</button>
 
       <nz-table #t [nzData]="rows()" [nzShowPagination]="false">
         <thead>
@@ -35,7 +44,9 @@ import { Auth } from '../../auth';
             <tr>
               <td>{{ row.name }}</td>
               <td>{{ row.role }}</td>
-              <td>{{ row.status === 'Active' ? 'აქტიური ✔' : 'არააქტიური ❌' }}</td>
+              <!-- <td>{{ row.isActive ? 'აქტიური ✔' : 'არააქტიური ❌' }}</td>
+                -->
+              <td><nz-icon nzType="{{ row.isActive ? 'check' : 'close' }}" nzTheme="outline" /></td>
             </tr>
           }
         </tbody>
@@ -47,18 +58,18 @@ export class Dashboard {
   private router = inject(Router);
   private auth = inject(Auth);
 
-  filter = signal('All');
+  filter = signal<string | null>(null);
 
-  users = [
-    { id: 1, name: 'კახა', role: 'ადმინისტრატორი', status: 'Active' },
-    { id: 2, name: 'Helpdesk', role: 'საპორტი', status: 'Inactive' },
-    { id: 3, name: 'საბა', role: 'სტუმარი', status: 'Active' },
-    { id: 4, name: 'SysAdmin', role: 'ადმინისტრატორი', status: 'Active' },
-    { id: 5, name: 'მარიამი', role: 'სტუმარი', status: 'Inactive' },
+  users: User[] = [
+    { id: 1, name: 'კახა', role: 'ადმინისტრატორი', isActive: true },
+    { id: 2, name: 'Helpdesk', role: 'საპორტი', isActive: false },
+    { id: 3, name: 'საბა', role: 'სტუმარი', isActive: true },
+    { id: 4, name: 'SysAdmin', role: 'ადმინისტრატორი', isActive: true },
+    { id: 5, name: 'მარიამი', role: 'სტუმარი', isActive: false },
   ];
 
   rows = computed(() =>
-    this.filter() === 'All' ? this.users : this.users.filter((u) => u.status === this.filter()),
+    this.filter() === null ? this.users : this.users.filter((u) => (this.filter() === 'Active' ? u.isActive : !u.isActive)),
   );
 
   logout() {
