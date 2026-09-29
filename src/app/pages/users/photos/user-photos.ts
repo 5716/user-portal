@@ -1,6 +1,6 @@
 import { httpResource } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -18,28 +18,41 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         <p class="text-gray-500 mb-6">{{ user.email }} · {{ user.company?.name }}</p>
       }
 
-      <div class="grid grid-cols-3 gap-4">
+      <!-- <div class="grid grid-cols-3 gap-4">
         @for (photo of photosResource.value().slice(0, 12); track photo.id) {
           <img
-            [src]="'https://picsum.photos/seed/' + photo.id + '/150'"
+            [src]="photo.thumbnailUrl"
             [alt]="photo.title"
             class="rounded-lg w-full"
           />
         }
-      </div>
+      </div> -->
+
+
+        @for (post of postsResource.value().slice(0, 12); track post.id) {
+          <h2 class="text-lg font-semibold mt-4">{{ post.title }}</h2>
+          <p class="text-gray-700 mb-4">{{ post.body }}</p>
+        }
+
     </div>
   `,
 })
 export class UserPhotos {
-  private route = inject(ActivatedRoute);
-  id = Number(this.route.snapshot.paramMap.get('id'));
+
+  id = input<number>();
 
   userResource = httpResource<PlaceholderUser>(() => ({
-    url: `https://jsonplaceholder.typicode.com/users/${this.id}`,
+    url: `https://jsonplaceholder.typicode.com/users/${this.id()}`,
   }));
 
-  photosResource = httpResource<PlaceholderPhoto[]>(
-    () => ({ url: `https://jsonplaceholder.typicode.com/photos?albumId=${this.id}` }),
+  // photosResource = httpResource<PlaceholderPhoto[]>(
+  //   () => ({ url: `https://jsonplaceholder.typicode.com/photos?albumId=${this.id()}` }),
+  //   { defaultValue: [] },
+  // );
+
+  postsResource = httpResource<Post[]>(
+    () => ({ url: `https://jsonplaceholder.typicode.com/posts?userId=${this.id()}` }),
     { defaultValue: [] },
   );
+
 }
