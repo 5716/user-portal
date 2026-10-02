@@ -10,48 +10,7 @@ import { Auth } from '../../auth';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule, NzIconModule],
-  template: `
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-      <div class="w-96 bg-white p-8 rounded-xl shadow flex flex-col gap-4">
-        <h1 class="text-xl font-semibold text-center">სისტემაში შესვლა</h1>
-        <form nz-form [formGroup]="form" (ngSubmit)="submit()">
-          <nz-form-item>
-            <nz-form-control nzErrorTip="შეიყვანე ელ-ფოსტა სწორი ფორმატით">
-              <input
-                nz-input
-                formControlName="email"
-                placeholder="ელ-ფოსტა"
-                autocomplete="saba-email"
-              />
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control nzErrorTip="საჭიროა მინიმუმ 6 სიმბოლო">
-              <nz-input-password>
-                <input
-                  nz-input
-                  placeholder="პაროლი"
-                  formControlName="password"
-                  autocomplete="current-password"
-                />
-                <ng-template nzInputPasswordIcon let-visible>
-                  @if (visible) {
-                    <nz-icon nzType="eye" nzTheme="twotone" />
-                  } @else {
-                    <nz-icon nzType="eye-invisible" nzTheme="outline" />
-                  }
-                </ng-template>
-              </nz-input-password>
-            </nz-form-control>
-          </nz-form-item>
-          <button nz-button nzType="primary" nzBlock [disabled]="form.invalid">შესვლა</button>
-        </form>
-        <!-- <p class="text-center text-sm">
-            არ ხარ დარეგისტრირებული? <a routerLink="/signup" class="text-blue-600">რეგისტრაცია</a>
-          </p> -->
-      </div>
-    </div>
-  `,
+  templateUrl: './login.html',
 })
 export class Login implements OnInit {
   ngOnInit(): void {
@@ -73,6 +32,6 @@ export class Login implements OnInit {
     //   return;
     // }
     this.auth.login();
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/users']);
   }
 }

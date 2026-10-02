@@ -1,10 +1,3 @@
-interface User {
-  id: number;
-  name: string;
-  role: string;
-  isActive: boolean;
-}
-
 interface PlaceholderUser {
   id: number;
   name: string;
@@ -27,11 +20,4 @@ interface PlaceholderUser {
     catchPhrase: string;
     bs: string;
   };
-}
-interface PlaceholderPhoto {
-  albumId: number;
-  id: number;
-  title: string;
-  url: string;
-  thumbnailUrl: string;
 }

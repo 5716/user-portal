@@ -9,19 +9,16 @@ export const routes: Routes = [
   },
 
   {
-    path: 'dashboard',
-    canActivate: [authGuard],
-    loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
-  },
-  {
     path: 'users',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/users/list/list').then((m) => m.List),
   },
   {
     path: 'users/:id',
-    loadComponent: () => import('./pages/users/photos/user-photos').then((m) => m.UserPhotos),
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/users/detail/detail').then((m) => m.Detail),
     children: [
+      { path: '', redirectTo: 'photos', pathMatch: 'full' },
       {
         path: 'photos',
         loadComponent: () => import('./pages/users/photos/user-photos').then((m) => m.UserPhotos),
@@ -36,19 +33,9 @@ export const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'users/:id/photos',
-  //   canActivate: [authGuard],
-  //   loadComponent: () => import('./pages/users/photos/user-photos').then((m) => m.UserPhotos),
-  // },
-  // {
-  //   path: 'users/:id/posts',
-  //   canActivate: [authGuard],
-  //   loadComponent: () => import('./pages/users/posts/posts').then((m) => m.Posts),
-  // },
-  // {
-  //   path: 'users/:id/todos',
-  //   canActivate: [authGuard],
-  //   loadComponent: () => import('./pages/users/todos/todos').then((m) => m.Todos),
-  // },
+
+  {
+    path: '**',
+    loadComponent: () => import('./pages/404/404').then((c) => c.Page404),
+  },
 ];

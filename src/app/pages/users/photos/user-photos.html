@@ -1,0 +1,36 @@
+<div class="pt-6">
+  @if (userResource.value(); as user) {
+    <h1 class="text-2xl font-semibold mb-2">{{ user.name }}</h1>
+    <p class="text-gray-500 mb-6">{{ user.email }}</p>
+  }
+
+  <div class="grid grid-cols-3 gap-4">
+    @for (photo of photosResource.value().slice(0, 12); track photo.id) {
+      <img
+        [src]="'https://picsum.photos/seed/' + photo.id + '/150'"
+        [alt]="photo.title"
+        class="rounded-lg w-full cursor-pointer hover:opacity-80"
+        (click)="selected.set(photo)"
+      />
+    }
+  </div>
+</div>
+
+<nz-modal
+  [nzVisible]="selected() !== null"
+  [nzTitle]="modalTitle()"
+  [nzFooter]="null"
+  nzCentered
+  nzWidth="640px"
+  (nzOnCancel)="selected.set(null)"
+>
+  <ng-container *nzModalContent>
+    @if (selected(); as photo) {
+      <img
+        [src]="'https://picsum.photos/seed/' + photo.id + '/600'"
+        [alt]="photo.title"
+        class="w-full rounded-lg"
+      />
+    }
+  </ng-container>
+</nz-modal>

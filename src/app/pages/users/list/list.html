@@ -2,8 +2,8 @@
   <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">მომხმარებლები</h1>
     <div class="flex items-center gap-2">
-      <button nz-button nzType="primary" routerLink="/dashboard">
-        <nz-icon nzType="dashboard" nzTheme="outline" />მართვის პანელი
+      <button nz-button nzType="primary" (click)="showModal.set(true)">
+        <nz-icon nzType="plus" nzTheme="outline" />დამატება
       </button>
       <button nz-button nzDanger (click)="logout()">
         <nz-icon nzType="logout" nzTheme="outline" />გასვლა
@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <nz-table #users [nzData]="rows()" [nzShowPagination]="false">
+  <nz-table #users [nzData]="rows()" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>სრული სახელი</th>
@@ -21,12 +21,26 @@
     </thead>
     <tbody>
       @for (row of users.data; track row.id) {
-      <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-        <td class="text-blue-600 underline">{{ row.name }}</td>
-        <td>{{ row.email }}</td>
-        <td><nz-icon nzType="{{ row.id > 5 ? 'apple' : 'windows' }}" nzTheme="fill" /></td>
-      </tr>
+        <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+          <td class="text-blue-600 underline">{{ row.name }}</td>
+          <td>{{ row.email }}</td>
+          <td><nz-icon nzType="{{ row.id > 5 ? 'apple' : 'windows' }}" nzTheme="fill" /></td>
+        </tr>
       }
     </tbody>
   </nz-table>
 </div>
+
+<nz-modal
+  [nzVisible]="showModal()"
+  nzTitle="ახალი მომხმარებელი"
+  nzOkText="დამატება"
+  nzCancelText="გაუქმება"
+  [nzOkLoading]="saving()"
+  (nzOnOk)="save()"
+  (nzOnCancel)="showModal.set(false)"
+>
+  <ng-container *nzModalContent>
+    <app-add-edit-dialog />
+  </ng-container>
+</nz-modal>

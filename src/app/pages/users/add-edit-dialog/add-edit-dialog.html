@@ -1,1 +1,44 @@
-<p>add-edit-dialog works!</p>
+<form nz-form [formGroup]="form" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired>სრული სახელი</nz-form-label>
+    <nz-form-control nzErrorTip="შეიყვანე სახელი">
+      <input nz-input formControlName="name" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired>მომხმარებლის სახელი</nz-form-label>
+    <nz-form-control nzErrorTip="შეიყვანე მომხმარებლის სახელი">
+      <input nz-input formControlName="username" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired>ელ-ფოსტა</nz-form-label>
+    <nz-form-control nzErrorTip="შეიყვანე სწორი ელ-ფოსტა">
+      <input nz-input formControlName="email" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label>ტელეფონი</nz-form-label>
+    <nz-form-control nzErrorTip="შეიყვანე ნომერი სწორი ფორმატით">
+      <div class="flex">
+        <span
+          class="flex items-center px-3 border border-r-0 border-gray-500/40 bg-gray-500/10 rounded-l-md whitespace-nowrap"
+        >
+          🇬🇪 +995
+        </span>
+        <input
+          nz-input
+          class="!rounded-l-none"
+          formControlName="phone"
+          placeholder="555 12 34 56"
+          maxlength="12"
+          inputmode="numeric"
+          (input)="formatPhone($event)"
+        />
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</form>

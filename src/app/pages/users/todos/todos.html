@@ -1,1 +1,27 @@
-<p>todos works!</p>
+<div class="pt-6">
+  <nz-table
+    #todos
+    [nzData]="todosResource.value()"
+    [nzShowPagination]="false"
+    [nzFrontPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th>დავალება</th>
+        <th>სტატუსი</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (todo of todos.data; track todo.id) {
+        <tr class="cursor-pointer hover:bg-gray-500/10" (click)="toggle(todo.id)">
+          <td>{{ todo.title }}</td>
+          <td>
+            <nz-tag [nzColor]="todo.completed ? 'green' : 'orange'">
+              {{ todo.completed ? 'დასრულებული' : 'მიმდინარე' }}
+            </nz-tag>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>

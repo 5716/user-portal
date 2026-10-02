@@ -1,0 +1,14 @@
+<div class="max-w-3xl mx-auto p-8">
+  <div class="flex items-center justify-between mb-6">
+    <nz-page-header class="!p-0" (nzBack)="onBack()" nzBackIcon nzTitle="უკან დაბრუნება" />
+    <app-dashboard-header />
+  </div>
+
+  <nz-tabs [nzSelectedIndex]="selectedIndex()">
+    <nz-tab nzTitle="ფოტოები" (nzClick)="go('photos')"></nz-tab>
+    <nz-tab nzTitle="პოსტები" (nzClick)="go('posts')"></nz-tab>
+    <nz-tab nzTitle="საქმეების სია" (nzClick)="go('todos')"></nz-tab>
+  </nz-tabs>
+
+  <router-outlet />
+</div>

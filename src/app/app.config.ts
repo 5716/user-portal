@@ -15,10 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNzI18n(en_US),
     provideNzDateFnsAdapter(),
-    provideRouter(
-      [],
-      withComponentInputBinding(),
-      withViewTransitions(),
-    ),
+    provideRouter([], withComponentInputBinding(), withViewTransitions()),
   ],
 };
