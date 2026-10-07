@@ -1,0 +1,5 @@
+:host {
+  @apply flex items-center justify-end;
+  background-color: #fcc;
+  padding: 0.5rem;
+}

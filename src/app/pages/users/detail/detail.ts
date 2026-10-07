@@ -4,13 +4,12 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { filter, map, startWith } from 'rxjs';
-import { DashboardHeaderComponent } from '../../components/dashboard-header';
 
 const TABS = ['photos', 'posts', 'todos'];
 
 @Component({
   selector: 'app-user-detail',
-  imports: [NzTabsModule, RouterOutlet, NzPageHeaderModule, DashboardHeaderComponent],
+  imports: [NzTabsModule, RouterOutlet, NzPageHeaderModule],
   templateUrl: './detail.html',
 })
 export class Detail {

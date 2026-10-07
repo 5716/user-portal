@@ -1,0 +1,4 @@
+:host {
+  @apply flex items-center justify-end;
+  padding: 0.5rem;
+}

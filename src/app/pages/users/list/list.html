@@ -5,13 +5,13 @@
       <button nz-button nzType="primary" (click)="showModal.set(true)">
         <nz-icon nzType="plus" nzTheme="outline" />დამატება
       </button>
-      <button nz-button nzDanger (click)="logout()">
-        <nz-icon nzType="logout" nzTheme="outline" />გასვლა
+      <button nz-button nzType="primary" (click)="reloadUsers()">
+        <nz-icon nzType="reload" nzTheme="outline" />განახლება
       </button>
     </div>
   </div>
 
-  <nz-table #users [nzData]="rows()" [nzShowPagination]="false" [nzFrontPagination]="false">
+  <nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>სრული სახელი</th>
@@ -20,26 +20,18 @@
       </tr>
     </thead>
     <tbody>
-      @for (row of users.data; track row.id) {
-        <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-          <td class="text-blue-600 underline">{{ row.name }}</td>
-          <td>{{ row.email }}</td>
-          <td><nz-icon nzType="{{ row.id > 5 ? 'apple' : 'windows' }}" nzTheme="fill" /></td>
-        </tr>
+      @for (row of userList.data; track row.id) {
+      <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+        <td class="text-blue-600 underline">{{ row.name }}</td>
+        <td>{{ row.email }}</td>
+        <td><nz-icon nzType="{{ row.id > 5 ? 'apple' : 'windows' }}" nzTheme="fill" /></td>
+      </tr>
       }
     </tbody>
   </nz-table>
 </div>
 
-<nz-modal
-  [nzVisible]="showModal()"
-  nzTitle="ახალი მომხმარებელი"
-  nzOkText="დამატება"
-  nzCancelText="გაუქმება"
-  [nzOkLoading]="saving()"
-  (nzOnOk)="save()"
-  (nzOnCancel)="showModal.set(false)"
->
+<nz-modal [nzVisible]="showModal()" nzTitle="ახალი მომხმარებელი" nzOkText="დამატება" nzCancelText="გაუქმება" [nzOkLoading]="saving()" (nzOnOk)="save()" (nzOnCancel)="showModal.set(false)">
   <ng-container *nzModalContent>
     <app-add-edit-dialog />
   </ng-container>
