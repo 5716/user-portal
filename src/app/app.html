@@ -1,9 +1,9 @@
 <div class="h-screen flex flex-col">
-  @if(true) {
-  <app-header></app-header>
-  <app-menu></app-menu>
+  @if (auth.loggedIn()) {
+    <app-header></app-header>
+    <app-menu></app-menu>
   }
-  <div class='flex-1 overflow-y-scroll scrollbar-gutter: stable both-edges'>
+  <div class="flex-1 overflow-y-scroll scrollbar-gutter: stable both-edges">
     <router-outlet></router-outlet>
   </div>
 </div>

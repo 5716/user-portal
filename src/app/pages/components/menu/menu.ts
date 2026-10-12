@@ -5,6 +5,5 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   selector: 'app-menu',
   imports: [NzButtonModule],
   templateUrl: './menu.html',
-  styleUrls: ['./menu.css'],
 })
-export class Menu { }
+export class Menu {}
