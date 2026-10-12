@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -11,12 +11,30 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 export class AddEditDialog {
   private fb = inject(FormBuilder);
 
+  user = input<PlaceholderUser | null>(null);
+
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.minLength(12)],
   });
+
+  constructor() {
+    effect(() => {
+      const u = this.user();
+      if (!u) {
+        this.form.reset();
+        return;
+      }
+      this.form.patchValue({
+        name: u.name,
+        username: u.username,
+        email: u.email,
+        phone: u.phone.startsWith('+995 ') ? u.phone.slice(5) : '',
+      });
+    });
+  }
 
   formatPhone(event: Event) {
     const input = event.target as HTMLInputElement;

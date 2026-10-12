@@ -1,8 +1,9 @@
+    <app-menu></app-menu>
 <div class="max-w-3xl mx-auto p-8">
   <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">მომხმარებლები</h1>
+    <h1 class="h-10 flex items-center text-xl font-semibold">მომხმარებლები</h1>
     <div class="flex items-center gap-2">
-      <button nz-button nzType="primary" (click)="showModal.set(true)">
+      <button nz-button nzType="primary" (click)="openAdd()">
         <nz-icon nzType="plus" nzTheme="outline" />დამატება
       </button>
       <button nz-button nzType="primary" (click)="reloadUsers()">
@@ -16,23 +17,37 @@
       <tr>
         <th>სრული სახელი</th>
         <th>ელ-ფოსტა</th>
-        <th>OS</th>
+        <th>ვერიფიკაცია</th>
+        <th>რედაქტირება</th>
       </tr>
     </thead>
     <tbody>
       @for (row of userList.data; track row.id) {
-      <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-        <td class="text-blue-600 underline">{{ row.name }}</td>
-        <td>{{ row.email }}</td>
-        <td><nz-icon nzType="{{ row.id > 5 ? 'apple' : 'windows' }}" nzTheme="fill" /></td>
-      </tr>
+        <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+          <td class="text-blue-600 underline">{{ row.name }}</td>
+          <td>{{ row.email }}</td>
+          <td><nz-icon nzType="{{ row.id > 5 ? 'issues-close' : 'check-square' }}" nzTheme="outline" /></td>
+          <td (click)="$event.stopPropagation()">
+            <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
+              <nz-icon nzType="edit" nzTheme="outline" />
+            </button>
+          </td>
+        </tr>
       }
     </tbody>
   </nz-table>
 </div>
 
-<nz-modal [nzVisible]="showModal()" nzTitle="ახალი მომხმარებელი" nzOkText="დამატება" nzCancelText="გაუქმება" [nzOkLoading]="saving()" (nzOnOk)="save()" (nzOnCancel)="showModal.set(false)">
+<nz-modal
+  [nzVisible]="showModal()"
+  [nzTitle]="modalTitle()"
+  nzOkText="შენახვა"
+  nzCancelText="გაუქმება"
+  [nzOkLoading]="saving()"
+  (nzOnOk)="save()"
+  (nzOnCancel)="close()"
+>
   <ng-container *nzModalContent>
-    <app-add-edit-dialog />
+    <app-add-edit-dialog [user]="editing()" />
   </ng-container>
 </nz-modal>

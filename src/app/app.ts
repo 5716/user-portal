@@ -2,11 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Auth } from './auth';
 import { Header } from './pages/components/header/header';
-import { Menu } from './pages/components/menu/menu';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Menu],
+  imports: [RouterOutlet, Header],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
