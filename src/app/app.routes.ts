@@ -36,6 +36,6 @@ export const routes: Routes = [
 
   {
     path: '**',
-    loadComponent: () => import('./pages/components/404/404').then((c) => c.Page404),
+    loadComponent: () => import('./shared/ui/user/404/404').then((c) => c.Page404),
   },
 ];
