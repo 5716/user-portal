@@ -7,13 +7,12 @@ import { Auth } from '../../../auth';
 @Component({
   selector: 'app-header',
   imports: [NzIconModule, NzButtonModule],
+  host: { class: 'flex items-center justify-end bg-[rgb(60,60,60)] p-2' },
   template: `
     <button nz-button nzDanger (click)="logout()">
-    <nz-icon nzType="logout" nzTheme="outline" />გასვლა
-  </button>
-
+      <nz-icon nzType="logout" nzTheme="outline" />გასვლა
+    </button>
   `,
-  styleUrl: './header.css',
 })
 export class Header {
   private auth = inject(Auth);
