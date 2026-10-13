@@ -1,11 +1,11 @@
 <div class="pt-6">
-  @if (userResource.hasValue() && userResource.value(); as user) {
+  <!-- @if (userResource.hasValue() && userResource.value(); as user) {
   <app-user [user]="user"></app-user>
   } @else {
   <h5 class="!text-red-500 mb-6">User not found</h5>
-  }
+  } -->
 
-  <div class="grid grid-cols-3 gap-4">
+  <div class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-4">
     @for (photo of photosResource.value().slice(0, 12); track photo.id) {
     <img [src]="'https://picsum.photos/seed/' + photo.id + '/150'" [alt]="photo.title" class="rounded-lg w-full cursor-pointer hover:opacity-80" (click)="selected.set(photo)" />
     }

@@ -5,7 +5,7 @@ import { CanActivateFn, Router } from '@angular/router';
 export class Auth {
   loggedIn = signal(localStorage.getItem('loggedIn') === 'true');
 
-  login()  { this.loggedIn.set(true);  localStorage.setItem('loggedIn', 'true'); }
+  login() { this.loggedIn.set(true); localStorage.setItem('loggedIn', 'true'); }
   logout() { this.loggedIn.set(false); localStorage.removeItem('loggedIn'); }
 }
 

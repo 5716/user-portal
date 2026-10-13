@@ -32,6 +32,6 @@ export class Login implements OnInit {
     //   return;
     // }
     this.auth.login();
-    this.router.navigate(['/users']);
+    this.router.navigate(['/']);
   }
 }

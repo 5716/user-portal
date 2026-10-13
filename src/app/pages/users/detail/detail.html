@@ -1,8 +1,8 @@
-<div class="h-12"></div>
-<div class="max-w-3xl mx-auto p-8">
-  <div class="flex items-center justify-between mb-6">
-    <nz-page-header class="!p-0" (nzBack)="onBack()" nzBackIcon nzTitle="უკან დაბრუნება" />
-  </div>
+<!-- <div class="h-12"></div>
+<div class="max-w-3xl mx-auto p-8"> -->
+
+<div class='p-4'>
+  <nz-page-header class="mb-6" (nzBack)="onBack()" nzBackIcon [nzTitle]="user().name" [nzSubtitle]="user().email" />
 
   <nz-tabs [nzSelectedIndex]="selectedIndex()">
     <nz-tab nzTitle="ფოტოები" (nzClick)="go('photos')"></nz-tab>
@@ -12,3 +12,4 @@
 
   <router-outlet />
 </div>
+<!-- </div> -->

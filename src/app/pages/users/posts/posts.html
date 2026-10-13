@@ -1,9 +1,9 @@
 <div class="pt-6">
-  @if (userResource.hasValue() && userResource.value(); as user) {
+  <!-- @if (userResource.hasValue() && userResource.value(); as user) {
   <app-user [user]="user"></app-user>
   } @else {
   <h5 class="!text-red-500 mb-6">User not found</h5>
-  }
+  } -->
 
   @for (post of postsResource.value().slice(0, 12); track post.id) {
   <div class="cursor-pointer rounded-lg p-3 -mx-3 hover:bg-gray-500/10" (click)="selected.set(post)">

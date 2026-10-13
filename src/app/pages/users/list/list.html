@@ -1,6 +1,16 @@
-    <app-menu></app-menu>
-<div class="max-w-3xl mx-auto p-8">
-  <div class="flex items-center justify-between mb-6">
+<!-- <div class="max-w-3xl mx-auto p-8"> -->
+
+
+<nz-page-header class="mb-6" nzTitle="Users">
+  <nz-page-header-extra>
+    <div class='flex gap-2'>
+      <button nz-button (click)="openAdd()">დამატება</button>
+      <button nz-button (click)="reloadUsers()">განახლება</button>
+    </div>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<!-- <div class="flex items-center justify-between mb-6">
     <h1 class="h-10 flex items-center text-xl font-semibold">მომხმარებლები</h1>
     <div class="flex items-center gap-2">
       <button nz-button nzType="primary" (click)="openAdd()">
@@ -10,43 +20,35 @@
         <nz-icon nzType="reload" nzTheme="outline" />განახლება
       </button>
     </div>
-  </div>
+  </div> -->
 
-  <nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
-    <thead>
-      <tr>
-        <th>სრული სახელი</th>
-        <th>ელ-ფოსტა</th>
-        <th>ვერიფიკაცია</th>
-        <th>რედაქტირება</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of userList.data; track row.id) {
-        <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-          <td class="text-blue-600 underline">{{ row.name }}</td>
-          <td>{{ row.email }}</td>
-          <td><nz-icon nzType="{{ row.id > 5 ? 'issues-close' : 'check-square' }}" nzTheme="outline" /></td>
-          <td (click)="$event.stopPropagation()">
-            <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
-              <nz-icon nzType="edit" nzTheme="outline" />
-            </button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </nz-table>
-</div>
+<nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
+  <thead>
+    <tr>
+      <th>სრული სახელი</th>
+      <th>ელ-ფოსტა</th>
+      <th nzWidth="140px">ვერიფიკაცია</th>
+      <th nzWidth="50px"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of userList.data; track row.id) {
+    <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+      <td class="font-semibold">{{ row.name }}</td>
+      <td>{{ row.email }}</td>
+      <td><nz-icon nzType="{{ row.id > 5 ? 'issues-close' : 'check-square' }}" nzTheme="outline" /></td>
+      <td (click)="$event.stopPropagation()">
+        <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
+          <nz-icon nzType="edit" nzTheme="outline" />
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</nz-table>
+<!-- </div> -->
 
-<nz-modal
-  [nzVisible]="showModal()"
-  [nzTitle]="modalTitle()"
-  nzOkText="შენახვა"
-  nzCancelText="გაუქმება"
-  [nzOkLoading]="saving()"
-  (nzOnOk)="save()"
-  (nzOnCancel)="close()"
->
+<nz-modal [nzVisible]="showModal()" [nzTitle]="modalTitle()" nzOkText="შენახვა" nzCancelText="გაუქმება" [nzOkLoading]="saving()" (nzOnOk)="save()" (nzOnCancel)="close()">
   <ng-container *nzModalContent>
     <app-add-edit-dialog [user]="editing()" />
   </ng-container>

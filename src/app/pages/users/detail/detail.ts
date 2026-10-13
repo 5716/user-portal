@@ -1,9 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { httpResource } from '@angular/common/http';
+import { Component, inject, input, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { filter, map, startWith } from 'rxjs';
 
 const TABS = ['photos', 'posts', 'todos'];
 
@@ -11,22 +10,35 @@ const TABS = ['photos', 'posts', 'todos'];
   selector: 'app-user-detail',
   imports: [NzTabsModule, RouterOutlet, NzPageHeaderModule],
   templateUrl: './detail.html',
+  styleUrls: ['./details.css'],
 })
 export class Detail {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  private currentChild = toSignal(
-    this.router.events.pipe(
-      filter((e) => e instanceof NavigationEnd),
-      map(() => this.router.url.split('/').pop()),
-      startWith(this.router.url.split('/').pop()),
-    ),
-  );
+  id = input<number>();
+  readonly selectedIndex = signal(0)
 
-  selectedIndex = computed(() => TABS.indexOf(this.currentChild() ?? 'photos'));
+  private readonly userResource = httpResource<PlaceholderUser>(
+    () => ({
+      url: `https://jsonplaceholder.typicode.com/users/${this.id()}`,
+    }),
+    { defaultValue: {} as PlaceholderUser },
+  );
+  readonly user = this.userResource.value;
+
+  // private currentChild = toSignal(
+  //   this.router.events.pipe(
+  //     filter((e) => e instanceof NavigationEnd),
+  //     map(() => this.router.url.split('/').pop()),
+  //     startWith(this.router.url.split('/').pop()),
+  //   ),
+  // );
+
+  // selectedIndex = computed(() => TABS.indexOf(this.currentChild() ?? 'photos'));
 
   go(tab: string) {
+    this.selectedIndex.set(TABS.indexOf(tab))
     this.router.navigate([tab], { relativeTo: this.route });
   }
 

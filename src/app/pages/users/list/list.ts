@@ -1,21 +1,22 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { Component, computed, inject, linkedSignal, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPageHeaderComponent, NzPageHeaderExtraDirective } from 'ng-zorro-antd/page-header';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { Observable, of } from 'rxjs';
 import { AddEditDialog } from '../add-edit-dialog/add-edit-dialog';
-import { Menu } from '../../components/menu/menu';
 
 const API = 'https://jsonplaceholder.typicode.com/users';
 
 @Component({
-  imports: [NzTableModule, NzIconModule, NzButtonModule, NzModalModule, AddEditDialog, Menu],
+  imports: [NzTableModule, NzIconModule, NzButtonModule, NzModalModule, AddEditDialog, NzPageHeaderComponent, NzPageHeaderExtraDirective],
   selector: 'app-list',
   templateUrl: './list.html',
+  styleUrls: ['./list.css']
 })
 export class List {
   private router = inject(Router);
