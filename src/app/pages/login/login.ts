@@ -27,10 +27,6 @@ export class Login implements OnInit {
   });
 
   submit() {
-    // if (this.form.invalid) {
-    //   Object.values(this.form.controls).forEach(c => { c.markAsDirty(); c.updateValueAndValidity(); });
-    //   return;
-    // }
     this.auth.login();
     this.router.navigate(['/']);
   }

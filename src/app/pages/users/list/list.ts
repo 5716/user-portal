@@ -13,10 +13,18 @@ import { AddEditDialog } from '../add-edit-dialog/add-edit-dialog';
 const API = 'https://jsonplaceholder.typicode.com/users';
 
 @Component({
-  imports: [NzTableModule, NzIconModule, NzButtonModule, NzModalModule, AddEditDialog, NzPageHeaderComponent, NzPageHeaderExtraDirective],
+  imports: [
+    NzTableModule,
+    NzIconModule,
+    NzButtonModule,
+    NzModalModule,
+    AddEditDialog,
+    NzPageHeaderComponent,
+    NzPageHeaderExtraDirective,
+  ],
   selector: 'app-list',
   templateUrl: './list.html',
-  styleUrls: ['./list.css']
+  styleUrls: ['./list.css'],
 })
 export class List {
   private router = inject(Router);
@@ -68,21 +76,11 @@ export class List {
     this.saving.set(true);
     request.subscribe({
       next: (response) => {
-        // const user: PlaceholderUser = {
-        //   id: Math.max(0, ...this.users().map((u) => u.id)) + 1,
-        //   ...value,
-        //   website: '',
-        //   address: { street: '', suite: '', city: '', zipcode: '', geo: { lat: 0, lng: 0 } },
-        //   company: { name: '', catchPhrase: '', bs: '' },
-        // };
-        // force add the new user to the list
         if (updated) {
           this.users.update((list) => list.map((u) => (u.id === updated.id ? updated : u)));
         } else {
           this.users.update((list) => [...list, response as PlaceholderUser]);
         }
-        // წესით, აქ უნდა განახლდეს სერვერის მონაცემები, მაგრამ ჩვენ უბრალოდ ადგილობრივ სიას ვაახლებთ.
-        // reloadUsers()
 
         this.saving.set(false);
         this.close();
@@ -91,9 +89,6 @@ export class List {
       error: () => {
         this.saving.set(false);
         this.message.error('შეცდომა, სცადე თავიდან');
-      },
-      complete: () => {
-        this.message.info('მოვრჩი!');
       },
     });
   }

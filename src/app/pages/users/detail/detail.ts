@@ -10,14 +10,13 @@ const TABS = ['photos', 'posts', 'todos'];
   selector: 'app-user-detail',
   imports: [NzTabsModule, RouterOutlet, NzPageHeaderModule],
   templateUrl: './detail.html',
-  styleUrls: ['./details.css'],
 })
 export class Detail {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   id = input<number>();
-  readonly selectedIndex = signal(0)
+  readonly selectedIndex = signal(0);
 
   private readonly userResource = httpResource<PlaceholderUser>(
     () => ({
@@ -27,18 +26,8 @@ export class Detail {
   );
   readonly user = this.userResource.value;
 
-  // private currentChild = toSignal(
-  //   this.router.events.pipe(
-  //     filter((e) => e instanceof NavigationEnd),
-  //     map(() => this.router.url.split('/').pop()),
-  //     startWith(this.router.url.split('/').pop()),
-  //   ),
-  // );
-
-  // selectedIndex = computed(() => TABS.indexOf(this.currentChild() ?? 'photos'));
-
   go(tab: string) {
-    this.selectedIndex.set(TABS.indexOf(tab))
+    this.selectedIndex.set(TABS.indexOf(tab));
     this.router.navigate([tab], { relativeTo: this.route });
   }
 
