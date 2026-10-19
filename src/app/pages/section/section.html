@@ -1,0 +1,32 @@
+<div class="max-w-3xl mx-auto p-8">
+  <h1 class="h-10 flex items-center text-xl font-semibold mb-6">{{ title() }}</h1>
+
+  @if (resource.error()) {
+    <p class="text-red-500">მონაცემების ჩატვირთვა ვერ მოხერხდა</p>
+  }
+
+  <nz-table
+    #t
+    [nzData]="rows()"
+    [nzLoading]="resource.isLoading()"
+    [nzShowPagination]="false"
+    [nzFrontPagination]="false"
+  >
+    <thead>
+      <tr>
+        @for (col of columns(); track col.key) {
+          <th>{{ col.label }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of t.data; track row['id']) {
+        <tr>
+          @for (col of columns(); track col.key) {
+            <td>{{ row[col.key] }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>

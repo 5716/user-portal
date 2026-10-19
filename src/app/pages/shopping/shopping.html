@@ -1,0 +1,78 @@
+<div class="max-w-3xl mx-auto p-8">
+  <h1 class="h-10 flex items-center text-xl font-semibold mb-6">ონლაინ შოპინგი</h1>
+
+  <nz-table
+    #t
+    [nzData]="products.value()"
+    [nzLoading]="products.isLoading()"
+    [nzShowPagination]="false"
+    [nzFrontPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th>დასახელება</th>
+        <th>ფასი</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of t.data; track p.id) {
+        <tr>
+          <td>{{ p.title }}</td>
+          <td>${{ p.price }}</td>
+          <td>
+            <button nz-button nzType="primary" nzSize="small" (click)="selected.set(p)">
+              ყიდვა
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+
+  @if (purchases().length) {
+    <h2 class="font-semibold mt-8 mb-3">ჩემი პროდუქტი</h2>
+    <nz-table #o [nzData]="purchases()" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>პროდუქტი</th>
+          <th>გადახდა</th>
+          <th>ფასი</th>
+          <th>თარიღი</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of o.data; track r.id) {
+          <tr>
+            <td>{{ r.title }}</td>
+            <td>{{ r.method }}</td>
+            <td>${{ r.price }}</td>
+            <td>{{ r.date }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+  }
+</div>
+
+<nz-modal
+  [nzVisible]="selected() !== null"
+  nzTitle="შეძენა"
+  nzOkText="გადახდა"
+  nzCancelText="გაუქმება"
+  nzCentered
+  [nzOkLoading]="paying()"
+  (nzOnOk)="buy()"
+  (nzOnCancel)="selected.set(null)"
+>
+  <ng-container *nzModalContent>
+    <p class="font-semibold">{{ selected()?.title }}</p>
+    <p class="mb-4">${{ selected()?.price }}</p>
+
+    <nz-select [(ngModel)]="method" class="w-full">
+      <nz-option nzValue="Apple Pay" nzLabel="Apple Pay"></nz-option>
+      <nz-option nzValue="Google Pay" nzLabel="Google Pay"></nz-option>
+      <nz-option nzValue="Card" nzLabel="ბარათი"></nz-option>
+    </nz-select>
+  </ng-container>
+</nz-modal>

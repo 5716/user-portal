@@ -32,9 +32,34 @@ export const routes: Routes = [
       },
     ],
   },
-
+  {
+    path: 'shopping',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/shopping/shopping').then((m) => m.Shopping),
+  },
+  {
+    path: 'weather',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/weather/weather').then((m) => m.WeatherPage),
+  },
+  {
+    path: 'market',
+    canActivate: [authGuard],
+    data: {
+      title: 'კრიპტო ბაზარი',
+      url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10',
+      columns: [
+        { key: 'market_cap_rank', label: '#' },
+        { key: 'name', label: 'სახელი' },
+        { key: 'current_price', label: 'ფასი ($)' },
+        { key: 'price_change_percentage_24h', label: '24სთ (%)' },
+      ],
+    },
+    loadComponent: () => import('./pages/section/section').then((m) => m.Section),
+  },
   {
     path: '**',
+    data: { hideBars: true },
     loadComponent: () => import('./shared/ui/user/404/404').then((c) => c.Page404),
   },
 ];
