@@ -1,13 +1,7 @@
 <div class="max-w-3xl mx-auto p-8">
   <h1 class="h-10 flex items-center text-xl font-semibold mb-6">ონლაინ შოპინგი</h1>
 
-  <nz-table
-    #t
-    [nzData]="products.value()"
-    [nzLoading]="products.isLoading()"
-    [nzShowPagination]="false"
-    [nzFrontPagination]="false"
-  >
+  <nz-table #t [nzData]="products.value()" [nzLoading]="products.isLoading()" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>დასახელება</th>
@@ -16,55 +10,48 @@
       </tr>
     </thead>
     <tbody>
-      @for (p of t.data; track p.id) {
-        <tr>
-          <td>{{ p.title }}</td>
-          <td>${{ p.price }}</td>
-          <td>
-            <button nz-button nzType="primary" nzSize="small" (click)="selected.set(p)">
-              ყიდვა
-            </button>
-          </td>
-        </tr>
+      @for (product of t.data; track product.id) {
+      <tr>
+        <td>{{ product.title }}</td>
+        <td>{{ product.price | currency : 'EUR' }}</td>
+        <td>
+          <button nz-button nzType="primary" nzSize="small" (click)="selected.set(product)">
+            ყიდვა
+          </button>
+        </td>
+      </tr>
       }
     </tbody>
   </nz-table>
 
+  <!-- <pre>{{selected() | json}}</pre> -->
+
   @if (purchases().length) {
-    <h2 class="font-semibold mt-8 mb-3">ჩემი პროდუქტი</h2>
-    <nz-table #o [nzData]="purchases()" [nzShowPagination]="false">
-      <thead>
-        <tr>
-          <th>პროდუქტი</th>
-          <th>გადახდა</th>
-          <th>ფასი</th>
-          <th>თარიღი</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (r of o.data; track r.id) {
-          <tr>
-            <td>{{ r.title }}</td>
-            <td>{{ r.method }}</td>
-            <td>${{ r.price }}</td>
-            <td>{{ r.date }}</td>
-          </tr>
-        }
-      </tbody>
-    </nz-table>
+  <div class="font-semibold mt-8 mb-3">ჩემი პროდუქტი</div>
+  <nz-table #o [nzData]="purchases()" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th>პროდუქტი</th>
+        <th>გადახდა</th>
+        <th>ფასი</th>
+        <th>თარიღი</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of o.data; track r.id) {
+      <tr>
+        <td>{{ r.title }}</td>
+        <td>{{ r.method | appPaymentIcon}}</td>
+        <td>{{ r.price | currency : 'EUR' }}</td>
+        <td>{{ r.date | date : 'dd-MM-yyyy HH:mm:ss' }}</td>
+      </tr>
+      }
+    </tbody>
+  </nz-table>
   }
 </div>
 
-<nz-modal
-  [nzVisible]="selected() !== null"
-  nzTitle="შეძენა"
-  nzOkText="გადახდა"
-  nzCancelText="გაუქმება"
-  nzCentered
-  [nzOkLoading]="paying()"
-  (nzOnOk)="buy()"
-  (nzOnCancel)="selected.set(null)"
->
+<nz-modal [nzVisible]="selected() !== null" nzTitle="შეძენა" nzOkText="გადახდა" nzCancelText="გაუქმება" nzCentered [nzOkLoading]="paying()" (nzOnOk)="buy()" (nzOnCancel)="selected.set(null)">
   <ng-container *nzModalContent>
     <p class="font-semibold">{{ selected()?.title }}</p>
     <p class="mb-4">${{ selected()?.price }}</p>

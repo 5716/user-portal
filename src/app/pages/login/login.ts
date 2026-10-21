@@ -15,6 +15,7 @@ import { Auth } from '../../auth';
 export class Login implements OnInit {
   ngOnInit(): void {
     localStorage.removeItem('loggedIn');
+    this.auth.logout();
   }
 
   private fb = inject(FormBuilder);

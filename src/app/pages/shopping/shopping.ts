@@ -1,3 +1,4 @@
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -6,10 +7,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { paymentIconPipe } from '../../shared/pipes/saba-pipe';
 
 @Component({
   selector: 'app-shopping',
-  imports: [FormsModule, NzTableModule, NzButtonModule, NzModalModule, NzSelectModule],
+  imports: [FormsModule, NzTableModule, NzButtonModule, NzModalModule, NzSelectModule, CurrencyPipe, DatePipe, paymentIconPipe],
   templateUrl: './shopping.html',
 })
 export class Shopping {
@@ -31,20 +33,20 @@ export class Shopping {
     if (!product) return;
 
     this.paying.set(true);
-    setTimeout(() => {
-      this.purchases.update((list) => [
-        {
-          id: list.length + 1,
-          title: product.title,
-          price: product.price,
-          method: this.method(),
-          date: new Date().toLocaleString(),
-        },
-        ...list,
-      ]);
-      this.paying.set(false);
-      this.selected.set(null);
-      this.message.success('გადახდა წარმატებით შესრულდა');
-    }, 1500);
+    // setTimeout(() => {
+    this.purchases.update((list) => [
+      {
+        id: list.length + 1,
+        title: product.title,
+        price: product.price,
+        method: this.method(),
+        date: new Date().toLocaleString(),
+      },
+      ...list,
+    ]);
+    this.paying.set(false);
+    this.selected.set(null);
+    this.message.success('გადახდა წარმატებით შესრულდა');
+    // }, 1500);
   }
 }

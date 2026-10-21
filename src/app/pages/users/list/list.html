@@ -22,31 +22,23 @@
   </thead>
   <tbody>
     @for (row of userList.data; track row.id) {
-      <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-        <td class="font-semibold">{{ row.name }}</td>
-        <td>{{ row.email }}</td>
-        <td>
-          <nz-icon nzType="{{ row.id > 5 ? 'issues-close' : 'check-square' }}" nzTheme="outline" />
-        </td>
-        <td (click)="$event.stopPropagation()">
-          <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
-            <nz-icon nzType="edit" nzTheme="outline" />
-          </button>
-        </td>
-      </tr>
+    <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+      <td class="font-semibold">{{ row.name }}</td>
+      <td>{{ row.email }}</td>
+      <td>
+        <nz-icon nzType="{{ row.id | vPipe : status()}}" nzTheme="outline" />
+      </td>
+      <td (click)="$event.stopPropagation()">
+        <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
+          <nz-icon nzType="edit" nzTheme="outline" />
+        </button>
+      </td>
+    </tr>
     }
   </tbody>
 </nz-table>
 
-<nz-modal
-  [nzVisible]="showModal()"
-  [nzTitle]="modalTitle()"
-  nzOkText="შენახვა"
-  nzCancelText="გაუქმება"
-  [nzOkLoading]="saving()"
-  (nzOnOk)="save()"
-  (nzOnCancel)="close()"
->
+<nz-modal [nzVisible]="showModal()" [nzTitle]="modalTitle()" nzOkText="შენახვა" nzCancelText="გაუქმება" [nzOkLoading]="saving()" (nzOnOk)="save()" (nzOnCancel)="close()">
   <ng-container *nzModalContent>
     <app-add-edit-dialog [user]="editing()" />
   </ng-container>

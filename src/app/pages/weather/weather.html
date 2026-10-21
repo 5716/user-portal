@@ -2,25 +2,19 @@
   <h1 class="h-10 flex items-center text-xl font-semibold mb-6">თბილისი</h1>
 
   @if (current(); as c) {
-    <div class="flex gap-4 mb-6">
-      <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
-        <p class="text-3xl font-semibold">{{ c.temperature }}°C</p>
-        <p class="text-sm text-gray-500">ტემპერატურა</p>
-      </div>
-      <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
-        <p class="text-3xl font-semibold">{{ c.windspeed }} კმ/სთ</p>
-        <p class="text-sm text-gray-500">ქარის სიჩქარე</p>
-      </div>
+  <div class="flex gap-4 mb-6">
+    <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
+      <p class="text-3xl font-semibold">{{ c.temperature }}°C</p>
+      <p class="text-sm text-gray-500">ტემპერატურა</p>
     </div>
+    <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
+      <p class="text-3xl font-semibold">{{ c.windspeed }} კმ/სთ</p>
+      <p class="text-sm text-gray-500">ქარის სიჩქარე</p>
+    </div>
+  </div>
   }
 
-  <nz-table
-    #t
-    [nzData]="rows()"
-    [nzLoading]="weather.isLoading()"
-    [nzShowPagination]="false"
-    [nzFrontPagination]="false"
-  >
+  <nz-table #t [nzData]="rows()" [nzLoading]="weather.isLoading()" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>თარიღი</th>
@@ -31,12 +25,12 @@
     </thead>
     <tbody>
       @for (r of t.data; track r.date) {
-        <tr>
-          <td>{{ r.date }}</td>
-          <td>{{ r.max }}°C</td>
-          <td>{{ r.min }}°C</td>
-          <td>{{ r.rain }}</td>
-        </tr>
+      <tr>
+        <td>{{ r.date | date : 'dd MMM yyyy' }}</td>
+        <td>{{ r.max }}°C</td>
+        <td>{{ r.min }}°C</td>
+        <td>{{ r.rain }}</td>
+      </tr>
       }
     </tbody>
   </nz-table>

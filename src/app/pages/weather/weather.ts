@@ -1,10 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 import { Component, computed } from '@angular/core';
 import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-weather',
-  imports: [NzTableModule],
+  imports: [NzTableModule, DatePipe],
   templateUrl: './weather.html',
 })
 export class WeatherPage {
