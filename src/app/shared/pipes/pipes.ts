@@ -16,8 +16,10 @@ export class SabaPipe implements PipeTransform {
   name: 'appPaymentIcon',
 })
 export class paymentIconPipe implements PipeTransform {
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return value
+  transform(value: string): string {
+    if (value === 'Apple Pay') return 'apple';
+    if (value === 'Google Pay') return 'google';
+    return 'credit-card';
   }
 }
 
@@ -28,6 +30,23 @@ export class VPipe implements PipeTransform {
   transform(value: number, ...args: number[]): unknown {
     if (args.length === 0) return 'issues-close';
     return value > args[0] ? 'issues-close' : 'check-square';
+  }
+}
 
+@Pipe({
+  name: 'appTempColor',
+})
+export class TempColorPipe implements PipeTransform {
+  transform(value: number): string {
+    return value > 20 ? 'text-red-500' : 'text-blue-500';
+  }
+}
+
+@Pipe({
+  name: 'appMarketColor',
+})
+export class MarketColorPipe implements PipeTransform {
+  transform(value: unknown): string {
+    return Number(value) >= 0 ? 'text-green-500' : 'text-red-500';
   }
 }

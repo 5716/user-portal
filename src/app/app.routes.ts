@@ -45,17 +45,7 @@ export const routes: Routes = [
   {
     path: 'market',
     canActivate: [authGuard],
-    data: {
-      title: 'კრიპტო ბაზარი',
-      url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10',
-      columns: [
-        { key: 'market_cap_rank', label: '#' },
-        { key: 'name', label: 'სახელი' },
-        { key: 'current_price', label: 'ფასი ($)' },
-        { key: 'price_change_percentage_24h', label: '24სთ (%)' },
-      ],
-    },
-    loadComponent: () => import('./pages/section/section').then((m) => m.Section),
+    loadComponent: () => import('./pages/market/market').then((m) => m.Market),
   },
   {
     path: '**',

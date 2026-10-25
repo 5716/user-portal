@@ -7,11 +7,22 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { paymentIconPipe } from '../../shared/pipes/saba-pipe';
+import { paymentIconPipe } from '../../shared/pipes/pipes';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-shopping',
-  imports: [FormsModule, NzTableModule, NzButtonModule, NzModalModule, NzSelectModule, CurrencyPipe, DatePipe, paymentIconPipe],
+  imports: [
+    FormsModule,
+    NzTableModule,
+    NzButtonModule,
+    NzModalModule,
+    NzSelectModule,
+    CurrencyPipe,
+    DatePipe,
+    paymentIconPipe,
+    NzIconModule,
+  ],
   templateUrl: './shopping.html',
 })
 export class Shopping {
@@ -40,7 +51,7 @@ export class Shopping {
         title: product.title,
         price: product.price,
         method: this.method(),
-        date: new Date().toLocaleString(),
+        date: new Date().toISOString(),
       },
       ...list,
     ]);

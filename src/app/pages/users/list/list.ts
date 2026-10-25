@@ -8,7 +8,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPageHeaderComponent, NzPageHeaderExtraDirective } from 'ng-zorro-antd/page-header';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable, of } from 'rxjs';
-import { VPipe } from '../../../shared/pipes/saba-pipe';
+import { VPipe } from '../../../shared/pipes/pipes';
 import { AddEditDialog } from '../add-edit-dialog/add-edit-dialog';
 
 const API = 'https://jsonplaceholder.typicode.com/users';
@@ -22,7 +22,7 @@ const API = 'https://jsonplaceholder.typicode.com/users';
     AddEditDialog,
     NzPageHeaderComponent,
     NzPageHeaderExtraDirective,
-    VPipe
+    VPipe,
   ],
   selector: 'app-list',
   templateUrl: './list.html',
@@ -45,7 +45,7 @@ export class List {
 
   users = linkedSignal(() => this.placeholderUsersResource.value());
 
-  status = computed(() => Math.floor(Math.random() * this.users().length))
+  status = computed(() => Math.floor(Math.random() * this.users().length));
 
   openAdd() {
     this.editing.set(null);

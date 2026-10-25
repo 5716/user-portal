@@ -1,0 +1,39 @@
+<div class="max-w-3xl mx-auto p-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="h-10 flex items-center text-xl font-semibold">{{ title }}</h1>
+    <button nz-button (click)="reload()" [nzLoading]="resource.status() === 'loading'">
+      <nz-icon nzType="reload" nzTheme="outline" />განახლება
+    </button>
+  </div>
+
+  @if (resource.error()) {
+    <p class="text-red-500">მონაცემების ჩატვირთვა ვერ მოხერხდა</p>
+  }
+
+  <nz-table
+    #t
+    [nzData]="resource.value()"
+    [nzLoading]="resource.status() === 'loading'"
+    [nzShowPagination]="false"
+    [nzFrontPagination]="false"
+  >
+    <thead>
+      <tr>
+        @for (col of columns; track col.key) {
+          <th>{{ col.label }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of t.data; track row['id']) {
+  <tr>
+    @for (col of columns; track col.key) {
+      <td [class]="col.key === 'price_change_percentage_24h' ? (row[col.key] | appMarketColor) : ''">
+        {{ row[col.key] }}
+      </td>
+    }
+  </tr>
+}
+    </tbody>
+  </nz-table>
+</div>
