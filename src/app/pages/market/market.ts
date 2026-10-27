@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -10,13 +10,13 @@ import { MarketColorPipe } from '../../shared/pipes/pipes';
   imports: [NzTableModule, NzButtonModule, NzIconModule, MarketColorPipe],
   templateUrl: './market.html',
 })
-export class Market {
+export class Market implements OnInit, OnDestroy {
   title = 'კრიპტო ბაზარი';
 
   columns = [
     { key: 'market_cap_rank', label: '#' },
     { key: 'name', label: 'სახელი' },
-    { key: 'current_price', label: 'ფასი ($)' },
+    { key: 'current_price', label: 'ფასი' },
     { key: 'price_change_percentage_24h', label: '24სთ (%)' },
   ];
 
@@ -25,12 +25,25 @@ export class Market {
     { defaultValue: [] },
   );
 
+  timer = setInterval(() => this.resource.reload(), 15000);
+
   constructor() {
-    const timer = setInterval(() => this.resource.reload(), 15000);
-    inject(DestroyRef).onDestroy(() => clearInterval(timer));
+    console.log('Market component constructed');
+    // const timer = setInterval(() => this.resource.reload(), 15000);
+    // inject(DestroyRef).onDestroy(() => clearInterval(timer));
   }
 
   reload() {
     this.resource.reload();
   }
+
+  ngOnInit(): void {
+    console.log('Market component initialized');
+  }
+
+  ngOnDestroy(): void {
+    console.log('Market component destroyed');
+    clearInterval(this.timer);
+  }
+
 }

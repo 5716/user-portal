@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Pipe, type PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -37,8 +38,9 @@ export class VPipe implements PipeTransform {
   name: 'appTempColor',
 })
 export class TempColorPipe implements PipeTransform {
-  transform(value: number): string {
-    return value > 20 ? 'text-red-500' : 'text-blue-500';
+  transform(value: number, ...args: number[]): string {
+    // console.log(value, args);
+    return value > args[0] ? 'text-red-500' : 'text-blue-500';
   }
 }
 
@@ -48,5 +50,35 @@ export class TempColorPipe implements PipeTransform {
 export class MarketColorPipe implements PipeTransform {
   transform(value: unknown): string {
     return Number(value) >= 0 ? 'text-green-500' : 'text-red-500';
+  }
+}
+
+@Pipe({
+  name: 'currency',
+})
+export class LariPipe extends DecimalPipe implements PipeTransform {
+  override transform(
+    value: number | string | null | undefined,
+    currency: string,
+    digitsInfo?: string,
+    locale?: string,
+  ): string | null;
+  override transform(value: null | undefined, currency: string, digitsInfo?: string, locale?: string): null;
+  override transform(
+    value: number | string | null | undefined,
+    currency: string,
+    digitsInfo?: string,
+    locale?: string,
+  ): string | null {
+    const currencySymbol = currency === 'gel' ? '₾' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency;
+
+    switch (typeof value) {
+      case 'number':
+        return value ? `${super.transform(value, '1.0-2', locale)} ${currencySymbol}` : null;
+      case 'string':
+        return +value ? `${super.transform(+value, '1.0-2', locale)} ${currencySymbol}` : null;
+      default:
+        return '--';
+    }
   }
 }

@@ -1,20 +1,20 @@
 <div class="max-w-3xl mx-auto p-8">
 
-<div class="flex items-center justify-between mb-6">
-  <h1 class="h-10 flex items-center text-xl font-semibold">თბილისი</h1>
-  <button nz-button (click)="reload()">
-    <nz-icon nzType="reload" nzTheme="outline" />განახლება
-  </button>
-</div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="h-10 flex items-center text-xl font-semibold">თბილისი</h1>
+    <button nz-button (click)="reload()">
+      <nz-icon nzType="reload" nzTheme="outline" />განახლება
+    </button>
+  </div>
 
   @if (current(); as c) {
   <div class="flex gap-4 mb-6">
     <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
-      <p class="text-3xl font-semibold">{{ c.temperature }}°C</p>
-      <p class="text-sm" [class]="c.temperature | appTempColor">ტემპერატურა</p>
+      <p class="text-sm">ტემპერატურა</p>
+      <p class="text-3xl font-semibold" [class]=" c.temperature | appTempColor : 15">{{ c.temperature }}°C</p>
     </div>
     <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
-      <p class="text-3xl font-semibold">{{ c.windspeed }} კმ/სთ</p>
+      <p class="text-3xl font-semibold" [class]=" c.windspeed | appTempColor : 15">{{ c.windspeed }} კმ/სთ</p>
       <p class="text-sm text-gray-500">ქარის სიჩქარე</p>
     </div>
   </div>

@@ -1,14 +1,14 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { paymentIconPipe } from '../../shared/pipes/pipes';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { LariPipe, paymentIconPipe } from '../../shared/pipes/pipes';
 
 @Component({
   selector: 'app-shopping',
@@ -18,10 +18,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzButtonModule,
     NzModalModule,
     NzSelectModule,
-    CurrencyPipe,
     DatePipe,
     paymentIconPipe,
     NzIconModule,
+    LariPipe
   ],
   templateUrl: './shopping.html',
 })
