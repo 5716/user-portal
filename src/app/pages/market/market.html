@@ -6,10 +6,9 @@
     </button>
   </div>
 
-  @if (resource.error()) {
-    <p class="text-red-500">მონაცემების ჩატვირთვა ვერ მოხერხდა</p>
-  }
-
+@if (resource.error()) {
+  <p class="text-red-500">{{ errorMessage() }}</p>
+}
   <nz-table
     #t
     [nzData]="resource.value()"

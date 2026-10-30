@@ -7,6 +7,8 @@ import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { routes } from './app.routes';
 
+import { provideHttpClient } from '@angular/common/http';
+
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
@@ -15,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNzI18n(en_US),
     provideNzDateFnsAdapter(),
+    provideHttpClient(),
     provideRouter([], withComponentInputBinding(), withViewTransitions()),
   ],
 };
