@@ -1,12 +1,9 @@
 import { httpResource } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { MarketColorPipe } from '../../shared/pipes/pipes';
-import { computed } from '@angular/core';
-import { errorText } from '../../shared/errors/error-handling';
 
 @Component({
   selector: 'app-market',
@@ -27,11 +24,6 @@ export class Market implements OnInit, OnDestroy {
     () => 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10',
     { defaultValue: [] },
   );
-
-  errorMessage = computed(() => {
-    const error = this.resource.error() as HttpErrorResponse;
-    return errorText(error?.status ?? 429);
-  });
 
   timer = setInterval(() => this.resource.reload(), 15000);
 
