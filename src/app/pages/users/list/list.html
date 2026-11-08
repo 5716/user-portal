@@ -11,34 +11,45 @@
   </nz-page-header-extra>
 </nz-page-header>
 
-<nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
-  <thead>
-    <tr>
-      <th>სრული სახელი</th>
-      <th>ელ-ფოსტა</th>
-      <th nzWidth="140px">ვერიფიკაცია</th>
-      <th nzWidth="50px"></th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (row of userList.data; track row.id) {
-    <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
-      <td class="font-semibold">{{ row.name }}</td>
-      <td>{{ row.email }}</td>
-      <td>
-        <nz-icon nzType="{{ row.id | vPipe : status()}}" nzTheme="outline" />
-      </td>
-      <td (click)="$event.stopPropagation()">
-        <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
-          <nz-icon nzType="edit" nzTheme="outline" />
-        </button>
-      </td>
-    </tr>
-    }
-  </tbody>
-</nz-table>
-
-<nz-modal [nzVisible]="showModal()" [nzTitle]="modalTitle()" nzOkText="შენახვა" nzCancelText="გაუქმება" [nzOkLoading]="saving()" (nzOnOk)="save()" (nzOnCancel)="close()">
+@if (placeholderUsersResource.isLoading()) {
+  <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 8 }" />
+} @else {
+  <nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th>სრული სახელი</th>
+        <th>ელ-ფოსტა</th>
+        <th nzWidth="140px">ვერიფიკაცია</th>
+        <th nzWidth="50px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of userList.data; track row.id) {
+        <tr class="cursor-pointer hover:bg-gray-50" (click)="goTo(row.id)">
+          <td class="font-semibold">{{ row.name }}</td>
+          <td>{{ row.email }}</td>
+          <td>
+            <nz-icon nzType="{{ row.id | vPipe: status() }}" nzTheme="outline" />
+          </td>
+          <td (click)="$event.stopPropagation()">
+            <button nz-button nzType="text" nzSize="small" (click)="openEdit(row)">
+              <nz-icon nzType="edit" nzTheme="outline" />
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+}
+<nz-modal
+  [nzVisible]="showModal()"
+  [nzTitle]="modalTitle()"
+  nzOkText="შენახვა"
+  nzCancelText="გაუქმება"
+  [nzOkLoading]="saving()"
+  (nzOnOk)="save()"
+  (nzOnCancel)="close()"
+>
   <ng-container *nzModalContent>
     <app-add-edit-dialog [user]="editing()" />
   </ng-container>

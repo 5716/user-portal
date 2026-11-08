@@ -10,6 +10,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable, of } from 'rxjs';
 import { VPipe } from '../../../shared/pipes/pipes';
 import { AddEditDialog } from '../add-edit-dialog/add-edit-dialog';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 const API = 'https://jsonplaceholder.typicode.com/users';
 
@@ -23,6 +24,7 @@ const API = 'https://jsonplaceholder.typicode.com/users';
     NzPageHeaderComponent,
     NzPageHeaderExtraDirective,
     VPipe,
+    NzSkeletonModule,
   ],
   selector: 'app-list',
   templateUrl: './list.html',

@@ -1,7 +1,16 @@
-<div id='loading-spinner' class='absolute z-1000 h-screen w-screen bg-gray-50/50 flex items-center justify-center cursor-progress'><nz-spin nzSimple nzSize="large" /></div>
+@if (loading.count() > 0) {
+  <div class="fixed inset-0 z-[2000] flex flex-col items-center justify-center gap-3 bg-gray-50/50 cursor-progress">
+    <nz-spin nzSimple [nzIndicator]="icon" />
+    <ng-template #icon>
+      <nz-icon nzType="loading-3-quarters" nzSpin class="text-5xl text-blue-500" />
+    </ng-template>
+    <p class="text-black-500">იტვირთება...</p>
+  </div>
+}
+
 <div class="h-screen flex flex-col">
   @if (auth.loggedIn()) {
-  <app-header></app-header>
+    <app-header></app-header>
   }
   <div class="flex-1">
     <router-outlet></router-outlet>

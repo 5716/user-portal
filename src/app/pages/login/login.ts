@@ -6,6 +6,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Auth } from '../../auth';
+import { Loading } from '../../core/loading';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class Login implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private auth = inject(Auth);
+  private loading = inject(Loading);
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -28,7 +30,12 @@ export class Login implements OnInit {
   });
 
   submit() {
-    this.auth.login();
-    this.router.navigate(['/']);
+    this.loading.count.update((n) => n + 1);
+
+    setTimeout(() => {
+      this.auth.login();
+      this.router.navigate(['/']);
+      this.loading.count.update((n) => n - 1);
+    }, 1500);
   }
 }

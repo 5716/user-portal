@@ -5,10 +5,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { TempColorPipe } from '../../shared/pipes/pipes';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-weather',
-  imports: [NzTableModule, DatePipe, NzButtonModule, NzIconModule, TempColorPipe],
+  imports: [NzTableModule, DatePipe, NzButtonModule, NzIconModule, TempColorPipe, NzSkeletonModule],
   templateUrl: './weather.html',
 })
 export class WeatherPage {

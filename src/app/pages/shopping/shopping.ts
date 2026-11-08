@@ -9,6 +9,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { LariPipe, paymentIconPipe } from '../../shared/pipes/pipes';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-shopping',
@@ -21,7 +22,8 @@ import { LariPipe, paymentIconPipe } from '../../shared/pipes/pipes';
     DatePipe,
     paymentIconPipe,
     NzIconModule,
-    LariPipe
+    LariPipe,
+    NzSkeletonModule,
   ],
   templateUrl: './shopping.html',
 })

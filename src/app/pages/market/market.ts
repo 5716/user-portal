@@ -4,10 +4,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { MarketColorPipe } from '../../shared/pipes/pipes';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-market',
-  imports: [NzTableModule, NzButtonModule, NzIconModule, MarketColorPipe],
+  imports: [NzTableModule, NzButtonModule, NzIconModule, MarketColorPipe, NzSkeletonModule],
   templateUrl: './market.html',
 })
 export class Market implements OnInit, OnDestroy {

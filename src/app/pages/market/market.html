@@ -5,27 +5,40 @@
       <nz-icon nzType="reload" nzTheme="outline" />განახლება
     </button>
   </div>
-
-  @if (!resource.error()) {
-  <nz-table #t [nzData]="resource.value()" [nzLoading]="resource.status() === 'loading'" [nzShowPagination]="false" [nzFrontPagination]="false">
-    <thead>
-      <tr>
-        @for (col of columns; track col.key) {
-        <th>{{ col.label }}</th>
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of t.data; track row['id']) {
-      <tr>
-        @for (col of columns; track col.key) {
-        <td [class]="col.key === 'price_change_percentage_24h' ? (row[col.key] | appMarketColor) : ''">
-          {{ row[col.key] }}
-        </td>
-        }
-      </tr>
-      }
-    </tbody>
-  </nz-table>
+  @if (resource.isLoading()) {
+    <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 6 }" />
+  } @else {
+    @if (!resource.error()) {
+      <nz-table
+        #t
+        [nzData]="resource.value()"
+        [nzLoading]="resource.status() === 'loading'"
+        [nzShowPagination]="false"
+        [nzFrontPagination]="false"
+      >
+        <thead>
+          <tr>
+            @for (col of columns; track col.key) {
+              <th>{{ col.label }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of t.data; track row['id']) {
+            <tr>
+              @for (col of columns; track col.key) {
+                <td
+                  [class]="
+                    col.key === 'price_change_percentage_24h' ? (row[col.key] | appMarketColor) : ''
+                  "
+                >
+                  {{ row[col.key] }}
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    }
   }
 </div>
