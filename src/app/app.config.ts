@@ -8,8 +8,8 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { routes } from './app.routes';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { errorHandlingInterceptor } from './core/error-handler';
-import { loadingInterceptor } from './core/loading';
+import { errorHandlingInterceptor } from './core/interceptors/error-handler';
+import { loadingInterceptor } from './core/interceptors/loading-spinner';
 
 registerLocaleData(en);
 

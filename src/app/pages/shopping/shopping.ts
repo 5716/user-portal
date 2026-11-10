@@ -7,9 +7,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { LariPipe, paymentIconPipe } from '../../shared/pipes/pipes';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { CryptoService } from '../market/services/crypto';
 
 @Component({
   selector: 'app-shopping',
@@ -29,6 +30,8 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 })
 export class Shopping {
   private message = inject(NzMessageService);
+
+  cryptoService = inject(CryptoService);
 
   products = httpResource<Product[]>(() => 'https://fakestoreapi.com/products?limit=10', {
     defaultValue: [],

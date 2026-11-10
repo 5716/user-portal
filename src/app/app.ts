@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { Auth } from './auth';
-import { Loading } from './core/loading';
+import { LoadingSpinner } from './core/interceptors/loading-spinner';
 import { Header } from './pages/components/header/header';
 
 @Component({
@@ -15,5 +15,5 @@ import { Header } from './pages/components/header/header';
 export class App {
   protected readonly title = signal('user-portal');
   protected auth = inject(Auth);
-  protected loading = inject(Loading);
+  protected loadingSpinner = inject(LoadingSpinner);
 }

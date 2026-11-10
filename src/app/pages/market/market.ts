@@ -1,10 +1,10 @@
-import { httpResource } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { MarketColorPipe } from '../../shared/pipes/pipes';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { CryptoService } from './services/crypto';
 
 @Component({
   selector: 'app-market',
@@ -12,6 +12,9 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
   templateUrl: './market.html',
 })
 export class Market implements OnInit, OnDestroy {
+
+  cryptoService = inject(CryptoService);
+
   title = 'კრიპტო ბაზარი';
 
   columns = [
@@ -21,12 +24,7 @@ export class Market implements OnInit, OnDestroy {
     { key: 'price_change_percentage_24h', label: '24სთ (%)' },
   ];
 
-  resource = httpResource<Record<string, unknown>[]>(
-    () => 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10',
-    { defaultValue: [] },
-  );
-
-  timer = setInterval(() => this.resource.reload(), 15000);
+  timer = setInterval(() => this.cryptoService.reload(), 15000);
 
   constructor() {
     console.log('Market component constructed');
@@ -35,7 +33,7 @@ export class Market implements OnInit, OnDestroy {
   }
 
   reload() {
-    this.resource.reload();
+    this.cryptoService.reload();
   }
 
   ngOnInit(): void {
