@@ -63,14 +63,20 @@ export class LariPipe extends DecimalPipe implements PipeTransform {
     digitsInfo?: string,
     locale?: string,
   ): string | null;
-  override transform(value: null | undefined, currency: string, digitsInfo?: string, locale?: string): null;
+  override transform(
+    value: null | undefined,
+    currency: string,
+    digitsInfo?: string,
+    locale?: string,
+  ): null;
   override transform(
     value: number | string | null | undefined,
     currency: string,
     digitsInfo?: string,
     locale?: string,
   ): string | null {
-    const currencySymbol = currency === 'gel' ? '₾' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency;
+    const currencySymbol =
+      currency === 'gel' ? '₾' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency;
 
     switch (typeof value) {
       case 'number':
@@ -80,5 +86,15 @@ export class LariPipe extends DecimalPipe implements PipeTransform {
       default:
         return '--';
     }
+  }
+}
+
+@Pipe({
+  name: 'appBtc',
+})
+export class BtcPipe implements PipeTransform {
+  transform(value: number, btcPrice: number | undefined): string {
+    if (!btcPrice) return '--';
+    return `${(value / btcPrice).toFixed(6)} ₿`;
   }
 }

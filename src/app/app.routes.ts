@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth';
 import { CryptoService } from './pages/market/services/crypto';
 import { WeatherService } from './pages/weather/services/weather';
+import { ShoppingService } from './pages/shopping/services/shopping';
+import { UsersService } from './pages/users/services/users';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
@@ -12,6 +14,7 @@ export const routes: Routes = [
   {
     path: 'users',
     canActivate: [authGuard],
+    providers: [UsersService],
     loadComponent: () => import('./pages/users/list/list').then((m) => m.List),
   },
   {
@@ -37,7 +40,7 @@ export const routes: Routes = [
   {
     path: 'shopping',
     canActivate: [authGuard],
-    providers: [CryptoService], // [ShoppingService, Crypto],
+    providers: [ShoppingService, CryptoService],
     loadComponent: () => import('./pages/shopping/shopping').then((m) => m.Shopping),
   },
   {

@@ -6,7 +6,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Auth } from '../../auth';
-import { LoadingSpinner } from '../../core/interceptors/loading-spinner';
 
 @Component({
   selector: 'app-login',
@@ -15,14 +14,12 @@ import { LoadingSpinner } from '../../core/interceptors/loading-spinner';
 })
 export class Login implements OnInit {
   ngOnInit(): void {
-    localStorage.removeItem('loggedIn');
     this.auth.logout();
   }
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private auth = inject(Auth);
-  private loadingSpinner = inject(LoadingSpinner);
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,12 +27,7 @@ export class Login implements OnInit {
   });
 
   submit() {
-    this.loadingSpinner.count.update((n) => n + 1);
-
-    setTimeout(() => {
-      this.auth.login();
-      this.router.navigate(['/']);
-      this.loadingSpinner.count.update((n) => n - 1);
-    }, 1500);
+    this.auth.login();
+    this.router.navigate(['/']);
   }
 }

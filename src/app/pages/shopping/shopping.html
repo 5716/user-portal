@@ -1,14 +1,20 @@
 <div class="max-w-3xl mx-auto p-8">
-  <h1 class="h-10 flex items-center text-xl font-semibold mb-6">ონლაინ შოპინგი</h1>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="h-10 flex items-center text-xl font-semibold">ონლაინ შოპინგი</h1>
+    <button nz-button (click)="reload()">
+      <nz-icon nzType="reload" nzTheme="outline" />განახლება
+    </button>
+  </div>
 
-  @if (products.isLoading()) {
+  @if (shoppingService.isLoading()) {
   <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 6 }" />
   } @else {
-  <nz-table #t [nzData]="products.value()" [nzLoading]="products.isLoading()" [nzShowPagination]="false" [nzFrontPagination]="false">
+  <nz-table #t [nzData]="shoppingService.value()" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>დასახელება</th>
         <th class="w-32">ფასი</th>
+        <th class="w-36">BTC</th>
         <th></th>
       </tr>
     </thead>
@@ -17,6 +23,7 @@
       <tr>
         <td>{{ product.title }}</td>
         <td class="text-right">{{ product.price | currency: 'gel' }}</td>
+        <td class="whitespace-nowrap text-right">{{ product.price | appBtc : cryptoService.btcPrice() }}</td>
         <td>
           <button nz-button nzType="primary" nzSize="small" (click)="selected.set(product)">
             ყიდვა
@@ -27,7 +34,6 @@
     </tbody>
   </nz-table>
   }
-  <!-- <pre>{{selected() | json}}</pre> -->
 
   @if (purchases().length) {
   <div class="font-semibold mt-8 mb-3">შენაძენი პროდუქტები</div>
@@ -59,7 +65,8 @@
 <nz-modal [nzVisible]="selected() !== null" nzTitle="შეძენა" nzOkText="გადახდა" nzCancelText="გაუქმება" nzCentered [nzOkLoading]="paying()" (nzOnOk)="buy()" (nzOnCancel)="selected.set(null)">
   <ng-container *nzModalContent>
     <p class="font-semibold">{{ selected()?.title }}</p>
-    <p class="mb-4">{{ selected()?.price | currency: 'gel' }}</p>
+    <p>{{ selected()?.price | currency: 'gel' }}</p>
+    <p class="mb-4 text-sm text-gray-500">{{ (selected()?.price ?? 0) | appBtc : cryptoService.btcPrice() }}</p>
 
     <nz-select [(ngModel)]="method" class="w-full">
       <nz-option nzValue="Apple Pay" nzLabel="Apple Pay"></nz-option>

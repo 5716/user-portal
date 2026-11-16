@@ -11,10 +11,15 @@
   </nz-page-header-extra>
 </nz-page-header>
 
-@if (placeholderUsersResource.isLoading()) {
+@if (usersService.isLoading()) {
   <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 8 }" />
 } @else {
-  <nz-table #userList [nzData]="users()" [nzShowPagination]="false" [nzFrontPagination]="false">
+  <nz-table
+    #userList
+    [nzData]="usersService.users()"
+    [nzShowPagination]="false"
+    [nzFrontPagination]="false"
+  >
     <thead>
       <tr>
         <th>სრული სახელი</th>
@@ -41,6 +46,7 @@
     </tbody>
   </nz-table>
 }
+
 <nz-modal
   [nzVisible]="showModal()"
   [nzTitle]="modalTitle()"

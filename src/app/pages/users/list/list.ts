@@ -1,18 +1,15 @@
-import { HttpClient, httpResource } from '@angular/common/http';
-import { Component, computed, inject, linkedSignal, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPageHeaderComponent, NzPageHeaderExtraDirective } from 'ng-zorro-antd/page-header';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { Observable, of } from 'rxjs';
 import { VPipe } from '../../../shared/pipes/pipes';
 import { AddEditDialog } from '../add-edit-dialog/add-edit-dialog';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-
-const API = 'https://jsonplaceholder.typicode.com/users';
+import { UsersService } from '../services/users';
 
 @Component({
   imports: [
@@ -32,8 +29,9 @@ const API = 'https://jsonplaceholder.typicode.com/users';
 })
 export class List {
   private router = inject(Router);
-  private http = inject(HttpClient);
   private message = inject(NzMessageService);
+
+  usersService = inject(UsersService);
 
   dialog = viewChild(AddEditDialog);
   showModal = signal(false);
@@ -41,13 +39,7 @@ export class List {
   editing = signal<PlaceholderUser | null>(null);
   modalTitle = computed(() => (this.editing() ? 'რედაქტირება' : 'ახალი მომხმარებელი'));
 
-  placeholderUsersResource = httpResource<PlaceholderUser[]>(() => ({ url: API }), {
-    defaultValue: [],
-  });
-
-  users = linkedSignal(() => this.placeholderUsersResource.value());
-
-  status = computed(() => Math.floor(Math.random() * this.users().length));
+  status = computed(() => Math.floor(Math.random() * this.usersService.users().length));
 
   openAdd() {
     this.editing.set(null);
@@ -69,25 +61,11 @@ export class List {
     if (!value) return;
 
     const current = this.editing();
-    const updated: PlaceholderUser | null = current
-      ? { ...current, ...value, phone: value.phone || current.phone }
-      : null;
-
-    const request: Observable<unknown> = current
-      ? current.id <= 10
-        ? this.http.put(`${API}/${current.id}`, updated)
-        : of(updated)
-      : this.http.post(API, value);
+    const request = current ? this.usersService.edit(current, value) : this.usersService.add(value);
 
     this.saving.set(true);
     request.subscribe({
-      next: (response) => {
-        if (updated) {
-          this.users.update((list) => list.map((u) => (u.id === updated.id ? updated : u)));
-        } else {
-          this.users.update((list) => [...list, response as PlaceholderUser]);
-        }
-
+      next: () => {
         this.saving.set(false);
         this.close();
         this.message.success(current ? 'მომხმარებელი განახლდა' : 'მომხმარებელი დაემატა');
@@ -100,7 +78,7 @@ export class List {
   }
 
   reloadUsers() {
-    this.placeholderUsersResource.reload();
+    this.usersService.reload();
   }
 
   goTo(id: number) {
