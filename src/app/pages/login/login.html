@@ -3,12 +3,12 @@
     <h1 class="text-xl font-semibold text-center">სისტემაში შესვლა</h1>
     <form nz-form [formGroup]="form" (ngSubmit)="submit()">
       <nz-form-item>
-        <nz-form-control nzErrorTip="შეიყვანე ელ-ფოსტა სწორი ფორმატით">
+        <nz-form-control nzErrorTip="შეიყვანე მომხმარებლის სახელი">
           <input
             nz-input
-            formControlName="email"
-            placeholder="ელ-ფოსტა"
-            autocomplete="saba-email"
+            formControlName="username"
+            placeholder="მომხმარებლის სახელი"
+            autocomplete="username"
           />
         </nz-form-control>
       </nz-form-item>
@@ -31,6 +31,11 @@
           </nz-input-password>
         </nz-form-control>
       </nz-form-item>
+
+      @if (error()) {
+        <p class="mb-2 text-red-500">{{ error() }}</p>
+      }
+
       <button nz-button nzType="primary" nzBlock [disabled]="form.invalid">შესვლა</button>
     </form>
   </div>

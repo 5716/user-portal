@@ -1,37 +1,39 @@
-import { DatePipe } from '@angular/common';
-import { httpResource } from '@angular/common/http';
-import { Component, computed } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { TempColorPipe } from '../../shared/pipes/pipes';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { WeatherService } from './services/weather';
 
 @Component({
   selector: 'app-weather',
-  imports: [NzTableModule, DatePipe, NzButtonModule, NzIconModule, TempColorPipe, NzSkeletonModule],
+  imports: [
+    NzTableModule,
+    DatePipe,
+    NzButtonModule,
+    NzIconModule,
+    TempColorPipe,
+    NzSkeletonModule,
+    NzSelectModule,
+    FormsModule,
+  ],
   templateUrl: './weather.html',
 })
 export class WeatherPage {
-  weather = httpResource<Weather>(
-    () =>
-      'https://api.open-meteo.com/v1/forecast?latitude=41.72&longitude=44.79&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto',
-  );
+  private weatherService = inject(WeatherService);
 
-  current = computed(() => this.weather.value()?.current_weather);
-
-  rows = computed(() => {
-    const d = this.weather.value()?.daily;
-    if (!d) return [];
-    return d.time.map((date, i) => ({
-      date,
-      max: d.temperature_2m_max[i],
-      min: d.temperature_2m_min[i],
-      rain: d.precipitation_sum[i],
-    }));
-  });
+  cities = this.weatherService.cities;
+  cityName = this.weatherService.cityName;
+  isLoading = this.weatherService.isLoading;
+  weather = this.weatherService.weather;
+  current = this.weatherService.current;
+  rows = this.weatherService.rows;
 
   reload() {
-    this.weather.reload();
+    this.weatherService.reload();
   }
 }

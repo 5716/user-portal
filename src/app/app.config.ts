@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorHandlingInterceptor } from './core/interceptors/error-handler';
 import { loadingInterceptor } from './core/interceptors/loading-spinner';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
 
 registerLocaleData(en);
 
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNzI18n(en_US),
     provideNzDateFnsAdapter(),
-    provideHttpClient(withInterceptors([loadingInterceptor, errorHandlingInterceptor])),
+    provideHttpClient(withInterceptors([loadingInterceptor, authInterceptor, errorHandlingInterceptor])),
     provideRouter([], withComponentInputBinding(), withViewTransitions()),
   ],
 };

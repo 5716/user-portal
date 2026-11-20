@@ -1,12 +1,31 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { tap } from 'rxjs';
+import { environment } from './environments/environments';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
-  loggedIn = signal(localStorage.getItem('loggedIn') === 'true');
+  private http = inject(HttpClient);
 
-  login() { this.loggedIn.set(true); localStorage.setItem('loggedIn', 'true'); }
-  logout() { this.loggedIn.set(false); localStorage.removeItem('loggedIn'); }
+  token = signal(localStorage.getItem('token'));
+  loggedIn = computed(() => !!this.token());
+
+  login(username: string, password: string) {
+    return this.http
+      .post<{ accessToken: string }>(`${environment.apiUrl}/auth/login`, { username, password })
+      .pipe(
+        tap((res) => {
+          localStorage.setItem('token', res.accessToken);
+          this.token.set(res.accessToken);
+        }),
+      );
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.token.set(null);
+  }
 }
 
 export const authGuard: CanActivateFn = () =>

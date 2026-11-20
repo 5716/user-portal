@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -21,13 +21,20 @@ export class Login implements OnInit {
   private router = inject(Router);
   private auth = inject(Auth);
 
+  error = signal('');
+
   form = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', Validators.required],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   submit() {
-    this.auth.login();
-    this.router.navigate(['/']);
+    if (this.form.invalid) return;
+    const { username, password } = this.form.getRawValue();
+
+    this.auth.login(username, password).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: () => this.error.set('მომხმარებელი ან პაროლი არასწორია'),
+    });
   }
 }

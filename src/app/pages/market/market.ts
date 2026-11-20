@@ -3,16 +3,22 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { MarketColorPipe } from '../../shared/pipes/pipes';
+import { LariPipe, MarketColorPipe } from '../../shared/pipes/pipes';
 import { CryptoService } from './services/crypto';
 
 @Component({
   selector: 'app-market',
-  imports: [NzTableModule, NzButtonModule, NzIconModule, MarketColorPipe, NzSkeletonModule],
+  imports: [
+    NzTableModule,
+    NzButtonModule,
+    NzIconModule,
+    MarketColorPipe,
+    LariPipe,
+    NzSkeletonModule,
+  ],
   templateUrl: './market.html',
 })
 export class Market implements OnInit, OnDestroy {
-
   cryptoService = inject(CryptoService);
 
   title = 'კრიპტო ბაზარი';

@@ -1,15 +1,42 @@
 <div class="max-w-3xl mx-auto p-8">
   <div class="flex items-center justify-between mb-6">
-    <h1 class="h-10 flex items-center text-xl font-semibold">თბილისი</h1>
+    <div class="flex items-center gap-3">
+      <nz-select
+        [ngModel]="cityName()"
+        (ngModelChange)="cityName.set($event)"
+        nzPlaceHolder="აირჩიე ქალაქი"
+        nzShowSearch
+        class="w-44"
+      >
+        @for (c of cities; track c.name) {
+          <nz-option [nzValue]="c.name" [nzLabel]="c.name"></nz-option>
+        }
+      </nz-select>
+    </div>
     <button nz-button (click)="reload()">
       <nz-icon nzType="reload" nzTheme="outline" />განახლება
     </button>
   </div>
-  @if (weather.isLoading()) {
+
+  @if (isLoading()) {
     <nz-skeleton [nzActive]="true" [nzParagraph]="{ rows: 6 }" />
   } @else {
     @if (current(); as c) {
-      <div class="flex gap-4 mb-6">
+      <div
+        class="mb-4 flex items-center justify-center gap-4 rounded-xl p-6 text-white"
+        [class]="
+          c.is_day
+            ? 'bg-gradient-to-r from-sky-400 to-amber-300'
+            : 'bg-gradient-to-r from-slate-800 to-indigo-900'
+        "
+      >
+        <span class="text-6xl">{{ c.is_day ? '☀️' : '🌙' }}</span>
+        <div>
+          <p class="text-xl font-semibold">{{ c.is_day ? 'დღეა' : 'ღამეა' }}</p>
+          <p class="text-sm opacity-80">{{ c.time | date: 'HH:mm' }}</p>
+        </div>
+      </div>
+      <div class="flex gap-4 mb-4">
         <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
           <p class="text-sm">ტემპერატურა</p>
           <p class="text-3xl font-semibold" [class]="c.temperature | appTempColor: 15">
@@ -22,7 +49,29 @@
           </p>
           <p class="text-sm text-gray-500">ქარის სიჩქარე</p>
         </div>
+        <div class="flex-1 rounded-xl border border-gray-500/30 p-4 text-center">
+          <p class="text-3xl font-semibold">
+            <nz-icon
+              nzType="arrow-up"
+              nzTheme="outline"
+              class="inline-block"
+              [style.transform]="'rotate(' + (c.winddirection + 180) + 'deg)'"
+            />
+            {{ c.winddirection }}°
+          </p>
+          <p class="text-sm text-gray-500">ქარის მიმართულება</p>
+        </div>
       </div>
+
+      @if (weather(); as w) {
+        <div class="grid grid-cols-2 gap-2 mb-6 text-sm text-gray-500 md:grid-cols-4">
+          <p>გრძედი: {{ w.longitude }}</p>
+          <p>განედი: {{ w.latitude }}</p>
+          <p>სიმაღლე: {{ w.elevation }} მ</p>
+          <p>დრო: {{ w.timezone }} ({{ w.timezone_abbreviation }})</p>
+          <p>განახლდა: {{ c.time | date: 'dd MMM HH:mm' }}</p>
+        </div>
+      }
     }
 
     <nz-table #t [nzData]="rows()" [nzShowPagination]="false" [nzFrontPagination]="false">
