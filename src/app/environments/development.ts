@@ -2,4 +2,5 @@
 
 export const environment = {
   apiUrl: 'https://dummyjson.com',
+  weatherApiUrl: 'https://api.open-meteo.com/v1/',
 };

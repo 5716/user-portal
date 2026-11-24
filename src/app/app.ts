@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { Auth } from './auth';
 import { LoadingSpinner } from './core/interceptors/loading-spinner';
+import { Auth } from './core/services/auth';
 import { Header } from './pages/components/header/header';
 
 @Component({

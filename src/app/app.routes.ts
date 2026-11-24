@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth';
+
+import { authGuard } from './core/guards/auth';
 import { CryptoService } from './pages/market/services/crypto';
-import { WeatherService } from './pages/weather/services/weather';
 import { ShoppingService } from './pages/shopping/services/shopping';
 import { UsersService } from './pages/users/services/users';
+import { WeatherService } from './pages/weather/services/weather';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'users', pathMatch: 'full' },
